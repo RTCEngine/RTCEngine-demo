@@ -8,12 +8,20 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "clipboard": "^2.0.1",
+    "element-ui": "^2.4.7",
+    "hark": "^1.2.3",
+    "mintools": "^1.1.0",
+    "rtcengine-js-sdk": "git+ssh://git@github.com:RTCEngine/RTCEngine-js-sdk.git",
     "vue": "^2.5.17"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",
     "@vue/cli-plugin-eslint": "^3.0.3",
     "@vue/cli-service": "^3.0.3",
+    "babel-plugin-component": "^1.1.1",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {

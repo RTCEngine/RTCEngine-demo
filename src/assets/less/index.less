@@ -1,0 +1,119 @@
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  line-height: 1;
+}
+
+body {
+  background-image: url('//demo.mediasoup.org/resources/images/body-bg-2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#app {
+  position: relative;
+  height: 100%;
+}
+
+.connection-status {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  min-width: 124px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px 0 5px;
+  border-radius: 25px;
+  background-color: rgba(255,255,255,0.2);
+  z-index: 1000;
+
+  .connection-icon {
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+
+    &.disconnected {
+      background-color: rgba(#aaa, 0.5);
+    }
+
+    &.connecting {
+      animation: Connecting .75s infinite linear;
+    }
+  
+    &.connected {
+      background-color: rgba(#30bd18, 0.75);
+    }
+
+    @keyframes Connecting {
+      50% { background-color: rgba(orange, 0.75); }
+    }
+  }
+
+  .connection-text {
+    margin-left: 5px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+  }
+}
+
+.room-link {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+
+  .link-container {
+    display: inline-block;
+    border-radius: 0 0 4px 4px;
+    background-color: rgba(255,255,255,0.75);
+    box-shadow: 0 3px 12px 2px rgba(17,17,17,0.4);
+
+    .link {
+      display: block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #104758;
+    }
+  }
+}
+
+.speaker-container {
+  position: fixed;
+  z-index: 100;
+  width: 235px;
+  height: 176px;
+  bottom: 20px;
+  left: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 5px 12px 2px rgba(17,17,17,0.5);
+  transition-property: border-color;
+  transition-duration: .15s;
+  border-color: #fff;
+}
+
+.lestener-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 0 140px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  .live-video-item {
+    flex: 0 0 auto;
+    width: 450px;
+    height: 337px;
+    margin: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 5px 12px 2px rgba(17,17,17,0.5);
+    transition-property: border-color;
+    transition-duration: .15s;
+  }
+}
