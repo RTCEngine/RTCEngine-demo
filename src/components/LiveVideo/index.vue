@@ -11,7 +11,7 @@
   <div v-if="oneself" class="controls">
     <i class="control-btn" :class="[audio ? 'icon-mic on' : 'icon-mic-off']" @click="prohibitAudio"></i>
     <i class="control-btn icon-videocam" :class="{'on': video}" @click="prohibitVideo"></i>
-    <i class="control-btn icon-arrows-cw"></i>
+    <!-- <i class="control-btn icon-arrows-cw"></i> -->
   </div>
   <div class="voice">
     <span class="voice-bar" :style="{'height': currentVolume * 10 + '%'}"></span>

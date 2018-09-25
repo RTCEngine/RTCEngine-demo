@@ -59,6 +59,7 @@ export default {
     return {
       roomId,
       invitationLink: window.location.href,
+      username: generatesName(),
       rtcEngine: null,
       localStream: null,
       otherStream: [],
@@ -90,6 +91,10 @@ export default {
     this.init()
   },
 
+  beforeDestroy () {
+    this.rtcEngine.leaveRoom()
+  },
+
   methods: {
     init () {
       /* eslint-disable no-console */
@@ -101,8 +106,7 @@ export default {
       const appkey = 'http://rtcengine.dot.cc/api/generateToken'
       const appSecret = 'dotcc'
       const room = this.roomId
-      const user = generatesName()
-      this.rtcEngine.generateTestToken(appkey, appSecret, room, user, (error, token) => {
+      this.rtcEngine.generateTestToken(appkey, appSecret, room, this.username, (error, token) => {
         if (!error) {
           this.rtcEngine.joinRoom(token)
         }
@@ -110,11 +114,17 @@ export default {
     },
 
     _localStreamListener () {
-      const localStream = new RTCStream({audio: true, video: true, attributes: { username: 'username' }})
+      const localStream = new RTCStream({
+        audio: true,
+        video: true,
+        attributes: { username: this.username }
+      })
 
       localStream.setupLocalMedia()
       localStream.addListener('initLocalStream', (stream)=> {
         this.localStream = stream
+        const message = 'You are in the room'
+        Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
 
         stream.addListener('localStreamUpdate', () => {
           console.log('localStream update')
@@ -128,11 +138,8 @@ export default {
 
     _remoteStreamListener () {
       this.rtcEngine.addListener('addRemoteStream', (stream) => {
-        console.log('addRemoteStream', stream.attributes)
-        if ('screen' in stream.attributes) {
-          console.log('screen')
-          // this.recordScreen(stream)
-        } else {
+        console.log('addRemoteStream', stream)
+        if (stream.peerId !== this.username) {
           const message = stream.attributes.username + ' join room'
           Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
           this.otherStream.push(stream)
@@ -140,11 +147,6 @@ export default {
         }
       })
       this.rtcEngine.addListener('removeRemoteStream', (stream) => {
-        if ('screen' in stream.attributes) {
-          console.log('screen')
-          // this.recordScreen()
-          return
-        }
         const message = stream.attributes.username + ' leave room'
         Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
         const index = this.otherStream.findIndex(item => {
