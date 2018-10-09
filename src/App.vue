@@ -26,8 +26,7 @@
     <div class="speaker-container">
       <live-video
         v-if="localStream"
-        :stream="localStream"
-        :oneself="true"></live-video>
+        :stream="localStream"></live-video>
     </div>
 
     <div class="lestener-container">
@@ -35,7 +34,7 @@
         class="live-video-item"
         v-for="stream in otherStream"
         :key="stream.streamId">
-        <live-video :stream="stream"></live-video>
+        <live-video :ref="stream.streamId" :stream="stream"></live-video>
       </div>
     </div>
   </div>
@@ -123,8 +122,6 @@ export default {
       localStream.setupLocalMedia()
       localStream.addListener('initLocalStream', (stream)=> {
         this.localStream = stream
-        const message = 'You are in the room'
-        Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
 
         stream.addListener('localStreamUpdate', () => {
           console.log('localStream update')
@@ -138,7 +135,6 @@ export default {
 
     _remoteStreamListener () {
       this.rtcEngine.addListener('addRemoteStream', (stream) => {
-        console.log('addRemoteStream', stream)
         if (stream.peerId !== this.username) {
           const message = stream.attributes.username + ' join room'
           Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
@@ -156,6 +152,15 @@ export default {
         this.otherStream = Object.assign([], this.otherStream)
       })
 
+      this.rtcEngine.addListener('muteRemoteVideo',(stream, muted) => {
+        this.$refs[stream.streamId].audio = muted
+        this.$refs[stream.streamId].currentVolume = 0
+      })
+
+      this.rtcEngine.addListener('muteRemoteAudio',(stream, muted) => {
+        this.$refs[stream.streamId].video = muted
+      })
+
       this.rtcEngine.addListener('audioLevel', (stream, audioLevel) => {
         console.log('audioLevel ', stream.streamId, audioLevel)
       })
@@ -163,6 +168,8 @@ export default {
       this.rtcEngine.addListener('state', (state) => {
         if (state === RTCEngine.CONNECTED) {
           this.rtcEngine.addStream(this.localStream)
+          const message = 'You are in the room'
+          Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
         }
         this.connectStatus = (state === RTCEngine.CONNECTED) ? 'connected' : state === RTCEngine.CONNECTING ? 'connecting' : 'disconnected'
       })

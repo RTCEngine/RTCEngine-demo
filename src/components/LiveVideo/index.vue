@@ -8,7 +8,7 @@
   <div class="user-info">
     <p class="username">{{ username }}</p>
   </div>
-  <div v-if="oneself" class="controls">
+  <div class="controls">
     <i class="control-btn" :class="[audio ? 'icon-mic on' : 'icon-mic-off']" @click="prohibitAudio"></i>
     <i class="control-btn icon-videocam" :class="{'on': video}" @click="prohibitVideo"></i>
     <!-- <i class="control-btn icon-arrows-cw"></i> -->
@@ -23,7 +23,7 @@
 import hark from 'hark'
 
 export default {
-  props: ['stream', 'oneself'],
+  props: ['stream'],
 
   data () {
     return {
