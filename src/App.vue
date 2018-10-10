@@ -1,20 +1,16 @@
 <style lang="less">
 @import './assets/less/reset.less';
 @import './assets/less/index.less';
-@import './assets/less/fontello.less';
 </style>
 
 <template>
   <div id="app">
-    <div class="connection-status">
-      <span
-        class="connection-icon"
-        :class="{
-          'connected': connectStatus === 'connected',
-          'connecting': connectStatus === 'connecting',
-          'disconnected': connectStatus === 'disconnected'
-        }"></span>
-      <p class="connection-text">{{ connectStatus.toUpperCase() }}</p>
+    <div class="connect-status">
+      <p :class="{
+        'connecting': connectStatus === 'connecting',
+        'connected': connectStatus === 'connected',
+        'disconnected': connectStatus === 'disconnected' }">
+        {{ connectStatus === 'connecting' ? '连接中...' : connectStatus === 'connected' ? '已连接' : '已断开' }}</p>
     </div>
 
     <div class="room-link">
@@ -96,42 +92,36 @@ export default {
 
   methods: {
     init () {
-      /* eslint-disable no-console */
-      this.rtcEngine = new RTCEngine()
-      // this._localStreamListener()
-      // this._remoteStreamListener()
-
       this.connectStatus = 'connecting'
-      const appkey = 'http://rtcengine.dot.cc/api/generateToken'
-      const appSecret = 'dotcc'
-      const room = this.roomId
-
-      this.rtcEngine.generateTestToken(appkey, appSecret, room, this.username, (error, token) => {
-        if (!error) {
-          this.rtcEngine.joinRoom(token)
-        }
-      })
-
+      this.rtcEngine = new RTCEngine()
       const localStream = new RTCStream({
         audio: true,
         video: true,
         attributes: { username: this.username }
       })
 
+      /* eslint-disable no-console */
       localStream.setupLocalMedia()
       localStream.addListener('initLocalStream', (stream)=> {
+        this.localStream = stream
 
-        console.log('initLocalStream', localStream)
-        this.localStream = localStream
-
-        stream.addListener('localStreamUpdate', () => {
-          console.log('localStream update')
+        stream.addListener('localStreamUpdate', (stream) => {
+          console.log('localStream update', stream)
         })
-
         stream.addListener('shutdownLocalMedia', () => {
+          this.localStream = null
           console.log('shutdownLocalMedia')
         })
+
+        this._remoteStreamListener()
       })
+    },
+
+    _remoteStreamListener () {
+      const appkey = 'http://rtcengine.dot.cc/api/generateToken'
+      const appSecret = 'dotcc'
+      const room = this.roomId
+
       this.rtcEngine.addListener('addRemoteStream', (stream) => {
         if (stream.peerId !== this.username) {
           const message = stream.attributes.username + ' join room'
@@ -164,21 +154,20 @@ export default {
       })
 
       this.rtcEngine.addListener('state', (state) => {
+        console.log('state', state)
         if (state === RTCEngine.CONNECTED) {
-          console.log('addStream',  state)
-          this.rtcEngine.addStream(localStream)
+          this.dotEngine.addStream(this.localStream)
           const message = 'You are in the room'
           Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
         }
         this.connectStatus = (state === RTCEngine.CONNECTED) ? 'connected' : state === RTCEngine.CONNECTING ? 'connecting' : 'disconnected'
       })
 
-    },
-
-    _localStreamListener () {
-    },
-
-    _remoteStreamListener () {
+      this.rtcEngine.generateTestToken(appkey, appSecret, room, this.username, (error, token) => {
+        if (!error) {
+          this.rtcEngine.joinRoom(token)
+        }
+      })
     }
   }
 }

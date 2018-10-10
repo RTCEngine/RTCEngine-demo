@@ -6,8 +6,8 @@ body {
 }
 
 body {
-  background-image: url('//demo.mediasoup.org/resources/images/body-bg-2.jpg');
-  background-size: cover;
+  background-image: url('../images/xiaobanke-bg.png');
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
@@ -16,48 +16,40 @@ body {
   height: 100%;
 }
 
-.connection-status {
+.connect-status {
   position: fixed;
   top: 20px;
-  left: 20px;
-  min-width: 124px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px 0 5px;
+  left: 24px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 8px;
   border-radius: 25px;
-  background-color: rgba(255,255,255,0.2);
-  z-index: 1000;
+  box-shadow: 0 2px 12px 2px rgba(17,17,17,0.4);
 
-  .connection-icon {
-    height: 20px;
-    width: 20px;
-    border-radius: 100%;
-
-    &.disconnected {
-      background-color: rgba(#aaa, 0.5);
-    }
-
-    &.connecting {
-      animation: Connecting .75s infinite linear;
-    }
-  
-    &.connected {
-      background-color: rgba(#30bd18, 0.75);
-    }
-
-    @keyframes Connecting {
-      50% { background-color: rgba(orange, 0.75); }
-    }
+  > p {
+    padding-left: 24px;
+    font-size: 12px;
+    color: #000;
+    margin-block-start: 0;
+    margin-block-end: 0;
   }
 
-  .connection-text {
-    margin-left: 5px;
-    color: #fff;
-    font-weight: 400;
-    font-size: 12px;
+  .connected {
+    background: url('../images/connected.png') no-repeat left center;
+    background-size: 14px 14px;
+  }
+
+  .connecting {
+    background: url('../images/connecting.gif') no-repeat left center;
+    background-size: 14px 14px;
+  }
+
+  .disconnected {
+    background: url('../images/disconnected.png') no-repeat left center;
+    background-size: 14px 14px;
   }
 }
+
 
 .room-link {
   position: absolute;
@@ -89,11 +81,6 @@ body {
   height: 176px;
   bottom: 20px;
   left: 20px;
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 5px 12px 2px rgba(17,17,17,0.5);
-  transition-property: border-color;
-  transition-duration: .15s;
-  border-color: #fff;
 }
 
 .lestener-container {

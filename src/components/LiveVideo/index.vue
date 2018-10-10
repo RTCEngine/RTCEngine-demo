@@ -3,16 +3,11 @@
 </style>
 
 <template>
-<div class="live-video">
-  <div v-show="video" :ref="stream.streamId" class="live-video-main"></div>
-  <div class="user-info">
-    <p class="username">{{ username }}</p>
-  </div>
-  <div class="controls">
-    <i class="control-btn" :class="[audio ? 'icon-mic on' : 'icon-mic-off']" @click="prohibitAudio"></i>
-    <i class="control-btn icon-videocam" :class="{'on': video}" @click="prohibitVideo"></i>
-    <!-- <i class="control-btn icon-arrows-cw"></i> -->
-  </div>
+<div class="video-item">
+  <div v-show="video" :ref="stream.streamId" class="video-main"></div>
+  <span class="microphone" :class="{'disabled': !audio }" @click="prohibitAudio"></span>
+  <span class="camera" :class="{'disabled': !video }" @click="prohibitVideo"></span>
+  <div class="opa-bg"><p class="video-username">{{ username }}</p></div>
   <div class="voice">
     <span class="voice-bar" :style="{'height': currentVolume * 10 + '%'}"></span>
   </div>
