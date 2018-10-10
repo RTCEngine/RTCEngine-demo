@@ -98,21 +98,20 @@ export default {
     init () {
       /* eslint-disable no-console */
       this.rtcEngine = new RTCEngine()
-      this._localStreamListener()
-      this._remoteStreamListener()
+      // this._localStreamListener()
+      // this._remoteStreamListener()
 
       this.connectStatus = 'connecting'
       const appkey = 'http://rtcengine.dot.cc/api/generateToken'
       const appSecret = 'dotcc'
       const room = this.roomId
+
       this.rtcEngine.generateTestToken(appkey, appSecret, room, this.username, (error, token) => {
         if (!error) {
           this.rtcEngine.joinRoom(token)
         }
       })
-    },
 
-    _localStreamListener () {
       const localStream = new RTCStream({
         audio: true,
         video: true,
@@ -121,7 +120,9 @@ export default {
 
       localStream.setupLocalMedia()
       localStream.addListener('initLocalStream', (stream)=> {
-        this.localStream = stream
+
+        console.log('initLocalStream', localStream)
+        this.localStream = localStream
 
         stream.addListener('localStreamUpdate', () => {
           console.log('localStream update')
@@ -131,9 +132,6 @@ export default {
           console.log('shutdownLocalMedia')
         })
       })
-    },
-
-    _remoteStreamListener () {
       this.rtcEngine.addListener('addRemoteStream', (stream) => {
         if (stream.peerId !== this.username) {
           const message = stream.attributes.username + ' join room'
@@ -167,12 +165,20 @@ export default {
 
       this.rtcEngine.addListener('state', (state) => {
         if (state === RTCEngine.CONNECTED) {
-          this.rtcEngine.addStream(this.localStream)
+          console.log('addStream',  state)
+          this.rtcEngine.addStream(localStream)
           const message = 'You are in the room'
           Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
         }
         this.connectStatus = (state === RTCEngine.CONNECTED) ? 'connected' : state === RTCEngine.CONNECTING ? 'connecting' : 'disconnected'
       })
+
+    },
+
+    _localStreamListener () {
+    },
+
+    _remoteStreamListener () {
     }
   }
 }
