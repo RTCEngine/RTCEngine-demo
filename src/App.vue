@@ -26,12 +26,12 @@
     </div>
 
     <div class="lestener-container">
-      <div
+      <live-video
         class="live-video-item"
         v-for="stream in otherStream"
-        :key="stream.streamId">
-        <live-video :ref="stream.streamId" :stream="stream"></live-video>
-      </div>
+        :key="stream.streamId"
+        :ref="stream.streamId"
+        :stream="stream"></live-video>
     </div>
   </div>
 </template>
@@ -113,7 +113,9 @@ export default {
           console.log('shutdownLocalMedia')
         })
 
-        this._remoteStreamListener()
+        setTimeout(() => {
+          this._remoteStreamListener()
+        }, 0)
       })
     },
 
@@ -154,9 +156,8 @@ export default {
       })
 
       this.rtcEngine.addListener('state', (state) => {
-        console.log('state', state)
         if (state === RTCEngine.CONNECTED) {
-          this.dotEngine.addStream(this.localStream)
+          this.rtcEngine.addStream(this.localStream)
           const message = 'You are in the room'
           Notification({ message, position: 'bottom-right', type: 'success', duration: 2500 })
         }

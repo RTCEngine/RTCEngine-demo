@@ -22,6 +22,7 @@ export default {
 
   data () {
     return {
+      speech: null,
       audio: true,
       video: true,
       currentVolume: 0,
@@ -36,6 +37,11 @@ export default {
 
   mounted () {
     this.$refs[this.stream.streamId].appendChild(this.stream.videoElement)
+  },
+
+  beforeDestroy () {
+    this.speech && this.speech.stop && this.speech.stop()
+    this.speech = null
   },
 
   methods: {

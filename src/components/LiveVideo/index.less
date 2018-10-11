@@ -3,8 +3,11 @@
   display: inline-block;
   width: 240px;
   height: 180px;
-  background: url('../../assets/images/person.png') #524F4F no-repeat center center;
-  border: 2px solid #000;
+  background: url('../../assets/images/person.png') #22292c no-repeat center center;
+  background-size: 25% auto;
+  border: 2px solid #22292c;
+  box-shadow: 0 5px 12px 2px rgba(17,17,17,0.5);
+  border-radius: 8px;
   margin-right: 4px;
   overflow: hidden;
 
@@ -21,30 +24,32 @@
 
   .microphone {
     position: absolute;
-    top: 10px;
-    right: 40px;
-    width: 14px;
-    height: 18px;
-    background: url('../../assets/images/microphone.png') no-repeat center top;
+    top: 5px;
+    right: 50px;
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    background: url('../../assets/images/microphone.png') rgba(255,255,255,0.7) no-repeat center center;
     cursor: pointer;
   }
 
   .microphone.disabled {
-    background: url('../../assets/images/microphone-disable.png') no-repeat center top;
+    background: url('../../assets/images/microphone-disable.png') rgba(51,51,51,0.5) no-repeat center center;
   }
 
   .camera {
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 15px;
-    width: 14px;
-    height: 18px;
-    background: url('../../assets/images/camera.png') no-repeat center top;
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    background: url('../../assets/images/camera.png') rgba(255,255,255,0.7) no-repeat center center;
     cursor: pointer;
   }
 
   .camera.disabled {
-    background: url('../../assets/images/camera-disable.png') no-repeat center top;
+    background: url('../../assets/images/camera-disable.png') rgba(51,51,51,0.5) no-repeat center center;
   }
 
   .voice {
@@ -70,7 +75,7 @@
         left: 0;
         right: 0;
         content: "";
-        height: 135px;
+        height: 180px;
         width: 4px;
         background:
           linear-gradient(transparent,transparent) padding-box,
@@ -86,6 +91,7 @@
     width: 100%;
     height: 78px;
     background: url('../../assets/images/video-opa-bg.png') left bottom no-repeat;
+    background-size: 100% auto;
 
     .video-username {
       position: absolute;
