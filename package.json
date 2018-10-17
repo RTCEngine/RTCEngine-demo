@@ -12,7 +12,7 @@
     "element-ui": "^2.4.7",
     "hark": "^1.2.3",
     "mintools": "^1.1.0",
-    "rtcengine-js-sdk": "git+ssh://git@github.com/RTCEngine/RTCEngine-js-sdk.git",
+    "rtcengine-js-sdk": "github:RTCEngine/RTCEngine-js-sdk",
     "vue": "^2.5.17"
   },
   "devDependencies": {
